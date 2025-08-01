@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name         Active-Post-Highlighter
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.0
 // @description  Surrounds Active Salesforce case posts in different colors depending on visibility
 // @author       Mark Skallet
 // @match        https://snowforce--uat.sandbox.lightning.force.com/lightning/r/Case/*
 // @match        https://snowflakegovcloud.lightning.force.com/lightning/r/Case/*
 // @match        https://snowforce.lightning.force.com/lightning/r/Case/*
 // @icon         https://i5.walmartimages.com/seo/Mr-Pen-Highlighters-Highlighters-Assorted-Colors-Pack-of-28-Highlighters-Bulk-Highlighter_c090afe3-c5ad-4277-8c85-82244ac5c75e.368562e5c661dc3081691f8ab86cd27b.jpeg
+// @updateURL    https://raw.githubusercontent.com/sfc-gh-mskallet/FeedHighlighter/main/Active-Post-Highlighter.user.js
+// @downloadURL  https://raw.githubusercontent.com/sfc-gh-mskallet/FeedHighlighter/main/Active-Post-Highlighter.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
