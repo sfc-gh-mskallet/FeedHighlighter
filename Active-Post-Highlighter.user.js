@@ -22,52 +22,79 @@
 
     console.log("Active Post Highlighter script is running");
 
+    function clearAllHighlights() {
+        document.querySelectorAll(PARENT_CONTAINER_SELECTOR).forEach(box => {
+            box.style.border = '';
+        });
+    }
+
     function highlightFeedEntries(selector) {
+        clearAllHighlights();
+        
         //console.log("highlightFeedEntries function called")
         const entries = document.querySelectorAll(selector);
-        entries.forEach(entry => {
-            const text = entry.textContent?.trim();
-            if (!text) return;
+        VISIBILITY_CONTAINERS.forEach(selector => {
+            document.querySelectorAll(selector).forEach(entry => {
+                const text = entry.textContent?.trim();
+                if (!text) return;
 
-            const boxPlacement = entry.closest(HIGHLIGHT_PLACEMENT);
-            
-            if (!boxPlacement) return;
+                const boxPlacement = entry.closest(HIGHLIGHT_PLACEMENT);
+                
+                if (!boxPlacement) return;
 
-            if (text === 'Snowflake - Gov C... Only' || text === 'Snowflake Only' || text === 'To: Internal') {
-                boxPlacement.style.border = '4px solid red';
-            } else if (text === 'All with access' || text === 'To: All') {
-                boxPlacement.style.border = '4px solid green';
-            }
-        });
-    }
-
-    // Observe changes to DOM what is to catch dynamic content
-    function waitForFeedContainerAndObserve() {
-        const container = document.querySelector(PARENT_CONTAINER_SELECTOR);
-
-        if (!container) {
-            requestAnimationFrame(waitForFeedContainerAndObserve);
-            return;
-        }
-        console.log("Found Chatter feed, starting observer...");
-
-        highlightFeedEntries(VISIBILITY_CONTAINERS); // Run initially
-
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.addedNodes.length > 0) {
-                    highlightFeedEntries(VISIBILITY_CONTAINERS);
-                    break;
+                if (text === 'Snowflake - Gov C... Only' || text === 'Snowflake Only' || text === 'To: Internal') {
+                    boxPlacement.style.border = '4px solid red';
+                } else if (text === 'All with access' || text === 'To: All') {
+                    boxPlacement.style.border = '4px solid green';
                 }
-            }
-        });
 
-        observer.observe(container, {
-            childList: true,
-            subtree: true
+            });
         });
     }
 
-    waitForFeedContainerAndObserve();
+    let mutationObserver = null;
+
+    function startGlobalObserver() {
+        if (mutationObserver) mutationObserver.disconnect();
+
+        let debounceTimeout = null;
+
+        mutationObserver = new MutationObserver(() => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                highlightFeedEntries();
+            }, 100);
+        });
+
+        /*
+        mutationObserver = new MutationObserver((mutations) => {
+            highlightFeedEntries();
+        });
+        */
+
+        mutationObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            characterDataOldValue: true,
+        });
+
+        // Initial run
+        highlightFeedEntries();
+    }
+
+    let lastUrl = location.href;
+
+    new MutationObserver(() => {
+        const currentUrl = location.href;
+        if (currentUrl !== lastUrl) {
+            lastUrl = currentUrl;
+            console.log('Detected subtab change via URL, refreshing highlights...');
+            highlightFeedEntries();
+        }
+    }).observe(document, { childList: true, subtree: true });
+
+    // Start observing right away
+    startGlobalObserver();
 
 })();
