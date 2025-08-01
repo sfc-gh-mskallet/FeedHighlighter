@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Active-Post-Highlighter
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Surrounds Active Salesforce case posts in different colors depending on visibility
 // @author       Mark Skallet
 // @match        https://snowforce--uat.sandbox.lightning.force.com/lightning/r/Case/*
