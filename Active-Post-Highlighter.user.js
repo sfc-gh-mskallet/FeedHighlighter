@@ -70,21 +70,4 @@
 
     waitForFeedContainerAndObserve();
 
-/*     const observer = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-            if (mutation.addedNodes.length > 0) {
-                highlightFeedEntries(DYNAMIC_VISIBILITY_CONTAINER,STATIC_VISIBILITY_CONTAINER);
-                break; // once per batch of mutations
-            }
-        }
-    });
-
-
-    // Start observing the body for DOM changes
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
- */
-
 })();
